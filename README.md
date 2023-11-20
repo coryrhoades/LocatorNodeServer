@@ -14,3 +14,55 @@ The locator nodes will push commands to the API that will do the following:
 -Get all occurrances of locator changes in date range.
 
 
+
+
+
+
+API Documentation
+
+Beacon API:
+
+POST /beacons/add
+Send mac address, optional friendly name. Will be inserted into SQL database. Response will return JSON with full beacon info including beaconId.
+{
+    "mac": "abcdefy",
+    "name": "test"
+}
+
+GET /beacons
+Returns all beacons within database in JSON format:
+    {
+        "beaconId": 101,
+        "macAddress": "abcdefg",
+        "beaconName": "TestBeacon2",
+        "currentOwner": null
+    }
+
+GET /beacons/{id}
+Returns beacon object with this ID in JSON format:
+ex: localhost:8080/beacons/101
+    {
+        "beaconId": 101,
+        "macAddress": "abcdefg",
+        "beaconName": "TestBeacon2",
+        "currentOwner": null
+    }
+    
+
+POST /beacons
+Returns all objects with mac address specified as "mac" within JSON info sent. Send:
+{
+    "mac": "abcdefg"
+}
+
+Returns: 
+
+    {
+        "beaconId": 100,
+        "macAddress": "abcdefg",
+        "beaconName": "TestBeacon1",
+        "currentOwner": null
+    }
+
+
+
