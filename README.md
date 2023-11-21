@@ -65,4 +65,7 @@ Returns:
     }
 
 
+GET /events returns last 100 events in database
+GET /events/{id} returns last 100 events for a specific beacon ID
+POST /events push JSON with beacon ID for the last 100 events for that beaconID
 
