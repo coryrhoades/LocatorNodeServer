@@ -1,14 +1,30 @@
 package com.example.locstreamserver.model;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Event {
 //    public int setEventId;
-    String timeStamp;
+    public String timeStamp;
     int locatorId;
     int beaconId;
     int signalStrength;
+    String macAddress;
     int eventId;
+
+    public String getMacAddress() {
+        return this.macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
+
+
+
+
 
     public void setEventId(int eventId) {
         this.eventId = eventId;
@@ -75,8 +91,30 @@ public class Event {
                 '}';
     }
 
-    public String getDBInsertString() {
-        return  "(" + locatorId + "," + beaconId + "," + signalStrength + "," + "CONVERT(DATETIME, '" + timeStamp + "', 120)" + ")";
+    //public String getDBInsertString() {
+    //    return  "(" + locatorId + "," + beaconId + "," + signalStrength + "," + "CONVERT(DATETIME, '" + timeStamp + "', 120)" + ")";
 
+//    }
+
+    public String getDBInsertString() {
+        // Check if any of the variables are null
+        if (locatorId == 0 || beaconId == 0 || signalStrength == 0 || timeStamp == null || timeStamp == "") {
+            return "";
+        }
+
+        // All variables are non-null, construct the insert string
+        return "(" + locatorId + "," + beaconId + "," + signalStrength + "," + "'" + timeStamp + "'" + ")";
     }
+
+
+    public long convertToEpoch() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(timeStamp, formatter);
+
+        long unixTimestamp = dateTime.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+        //System.out.println("Unix Timestamp: " + unixTimestamp);
+        return unixTimestamp;
+    }
+
 }

@@ -60,7 +60,8 @@ public class BeaconController {
             return beaconRepository.getBeaconById(id + "");
         } else {
             return null;
-        }
+            }
+
 
     }
 

@@ -5,6 +5,7 @@ import com.example.locstreamserver.model.LocatorNode;
 import com.example.locstreamserver.repository.LocatorRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 
 
@@ -28,20 +29,27 @@ public class LocatorNodeController {
     }
 
     @GetMapping("{id}")
-    public List<LocatorNode> getLocatorsByAccount(@PathVariable int id) {   //When implementing secret key and api key pair, add this to the (): @RequestHeader("API-Key") String apiKey, @RequestHeader("Secret-Key") String secretKey
+    public int getLocatorIdByMac(@PathVariable String id) {   //When implementing secret key and api key pair, add this to the (): @RequestHeader("API-Key") String apiKey, @RequestHeader("Secret-Key") String secretKey
 
 
-        return locatorRepository.GetLocatorsByAccount(apiKey, secretKey, id);
+        return locatorRepository.GetLocatorByMac(apiKey, secretKey, id);
     }
+
+
 
     @PostMapping
-    public String addLocator(int locatorId, String locatorName, int associatedCameraId, String macAddress ) {  //locators.add(new LocatorNode(4,"FourthTest",2,2, macAddress() ));
+    public String addLocator(@RequestBody LocatorNode locator) {  //locators.add(new LocatorNode(4,"FourthTest",2,2, macAddress() ));
         // Placeholder - Add api key & secret key handling from header info, validate before executing code below.
         // use the key handling to determine what account id they are coming from, current highest locator ID
-        int accountId = 1; //temporary - Use apiKey & secretKey to find accountId
+        //int accountId = 1; //temporary - Use apiKey & secretKey to find accountId
+        //System.out.println(locator.toString());
+        System.out.println("New locator being added @ macAddress: " + locator.getLocatorMAC());
+        //System.out.println(locatorRepository.getLocatorById());
 
-
-        return locatorRepository.AddLocator(apiKey, secretKey, locatorId, locatorName, associatedCameraId, accountId, macAddress );
+        return locatorRepository.AddLocator(locator.getLocatorName(), locator.getLocatorMAC());
     }
+
+
+
 
 }

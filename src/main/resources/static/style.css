@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #202222;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    color:white;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.beacons-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.beacons-table th, .beacons-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.beacons-table th {
+    background-color: #f4f4f4;
+}
+
+.pretty-button {
+    background-color: #202222; /* Green background */
+    border: none;
+    color: white; /* White text */
+    padding: 4px 15px; /* Top and bottom padding, left and right padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px; /* Button text size */
+    margin: 2px 1px;
+    width: 150px;
+    cursor: pointer;
+    //border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add shadow for 3D effect */
+    transition-duration: 0.4s; /* Adds a transition effect when hovering */
+}
+
+.pretty-button:hover {
+    background-color: #2e70db; /* Darker shade of green */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2); /* Bigger shadow on hover */
+}
+

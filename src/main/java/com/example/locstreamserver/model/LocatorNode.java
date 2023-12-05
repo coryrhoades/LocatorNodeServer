@@ -5,13 +5,15 @@ import java.util.Objects;
 public class LocatorNode {
     int locatorId;
     String locatorMAC;
-    String locatorName;
+    String locatorName = "Unnamed Locator Node";
     int associatedCameraId;
     int accountId;
     String locatorDescription;
     LocalDateTime dateAdded;
 
+public LocatorNode() {
 
+}
     public LocatorNode(int locatorId, String locatorName, int associatedCameraId, int accountId, String locatorMAC) {
         //change this later to be current number of locator IDs under this account + 1
         if( locatorId == 0 ) {

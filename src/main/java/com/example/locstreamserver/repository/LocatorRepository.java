@@ -1,9 +1,11 @@
 package com.example.locstreamserver.repository;
 
+import com.example.locstreamserver.model.Event;
 import com.example.locstreamserver.model.LocatorNode;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
+import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,15 +52,16 @@ public class LocatorRepository {
         return filteredLocators; // Replace with actual implementation
     }
 
-    public String AddLocator(String apiKey, String secretKey, int locatorId, String locatorName, int associatedCameraId, int accountId, String macAddress ) {
+    public String AddLocator(String locatorName, String macAddress ) {
+        //Instant.now().toString();
         //locators.add(new LocatorNode(locatorId,locatorName,associatedCameraId,accountId, macAddress() )); OLD
         //come back later and verify that there is not already a locator with the same mac address under this account ID first.
         //perform initial query check and return "Locator already exists" for example.
-        LocatorCountByAccount(1);
+        //LocatorCountByAccount(1);
 
 
         //build database query
-        String query = "INSERT INTO LocatorNodes (locatorId, accountId, locatorMAC) VALUES(" + locatorId + "," + accountId + ",'" + macAddress + "'" + ")";
+        String query = "INSERT INTO LocatorNodes (locatorName, locatorMAC, dateAdded) VALUES('" + locatorName + "', '" + macAddress + "', '" + Instant.now().toString() + "'" + ")";
         System.out.println("Query = " + query);
 
         //Execute
@@ -94,5 +97,72 @@ public class LocatorRepository {
                 random.nextInt(256));
         return macAddress;
     }
+
+    public int GetLocatorByMac(String apiKey, String secretKey, String id) {
+        int myId= 0;
+
+        //query database for this mac address
+        String query = "SELECT * from LocatorNodes where locatorMac = '" + id + "'";
+        //ResultSet result = databaseGetQueryResult(query);
+        //System.out.println("Query is: " + query);
+
+        ResultSet result = null; //where to store the SQL results
+        try {
+            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
+            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+            //System.out.println("Connected to Microsoft SQL Server. (compareAndUpdateOwner())");
+            Statement stmt = connection.createStatement();
+            result = stmt.executeQuery(query);
+            //System.out.println("result = " + result);
+            //System.out.println("Query String: " + queryString);
+
+
+            if(result != null) {
+
+
+                while (result.next()) {  //result contains the most recent of each locator node that has seen this beacon ID. If current node's signalSTrength > the old signalStrength || current node's timestamp is more than 3 minutes newer, change owner
+                    LocatorNode L = new LocatorNode();
+                    L.setLocatorMAC(result.getString("locatorMAC"));
+                    L.setLocatorId(result.getInt("locatorId"));
+
+                    System.out.println("L MAC: " + L.getLocatorMAC() + "    ID to match: " + id);
+
+                    if (L.getLocatorMAC().equals(id)) {
+                        System.out.println("Locator MAC matched with locator ID: " + L.getLocatorId());
+                        return L.getLocatorId();
+                    }
+
+                }
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error in compareAndUpdateOwner(): "+"Query failed to execute: " + query);
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+        System.out.println("Query = " + query);
+
+
+        System.out.println("GetLocationByMac: " + id);
+        for (LocatorNode locator : locators) {
+            if (locator.getLocatorMAC() == id) {
+                myId = locator.getLocatorId();
+                System.out.println("Locator Node detected.");
+            }
+
+        }
+
+
+        return myId;
+    }
+
 
 }

@@ -16,7 +16,7 @@ public class databaseConnectionInfo
 
     public databaseConnectionInfo(){
         url = "jdbc:sqlserver://" + serverIP + ";databaseName=" + databaseName + ";trustServerCertificate=true;QueryTimeout=2";
-        System.out.println("SQL Server Connection URL: " + url);
+        //System.out.println("SQL Server Connection URL: " + url);
     }
 
     public static String getDbpass() {

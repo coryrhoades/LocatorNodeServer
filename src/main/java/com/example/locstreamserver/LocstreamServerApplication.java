@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import com.example.locstreamserver.databaseConnectionInfo;
+import java.time.Clock;
+
 @SpringBootApplication
 public class LocstreamServerApplication {
     //static String url = "jdbc:sqlserver://192.168.50.243;databaseName=LocatorStreamServer;trustServerCertificate=true;";
@@ -15,6 +17,14 @@ public class LocstreamServerApplication {
     //static String dbpass = "C@llth3h0ff";
 
     public static void main(String[] args) {
+
+
+        // creating a Clock instance using
+        // systemUTC() method of Clock class
+        Clock clock = Clock.systemUTC();
+
+        // getting the current instant defined by clock
+        System.out.println("UTC time = " + clock.instant());
         //databaseTestConnection();
         SpringApplication.run(LocstreamServerApplication.class, args);
 
