@@ -65,4 +65,30 @@ Returns:
     }
 
 
+GET /events returns last 100 events in database
+
+GET /events/{id} returns last 100 events for a specific beacon ID
+
+POST /events push JSON with beacon ID for the last 100 events for that beaconID
+Example of data format to push:
+[
+{
+    "timeStamp": "2022-05-08 14:30:45",
+    "locatorId":1,
+    "beaconId":1,
+    "signalStrength":55
+},
+{
+    "timeStamp": "2022-05-08 14:30:45",
+    "locatorId":1,
+    "beaconId":1,
+    "signalStrength":55
+},
+{
+    "timeStamp": "2022-05-08 14:30:45",
+    "locatorId":1,
+    "beaconId":1,
+    "signalStrength":55
+}
+]
 
