@@ -53,6 +53,9 @@ public class BeaconEventController {
     public String  addEventsFromLocatorNode(@PathVariable int id, @RequestBody List<Event> events) {
         // Implement your logic here
         // For example, call a method that processes these events
+        if(id == 1) {
+            System.out.println("Request received from ID 1!");
+        }
         String response = eventRepository.processEventsForLocatorNode(id, events);
 
         // Return an appropriate response entity

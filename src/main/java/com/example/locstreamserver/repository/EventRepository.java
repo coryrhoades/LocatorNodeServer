@@ -44,6 +44,21 @@ public class EventRepository {
 
 
     public String processEventsForLocatorNode(int id, List<Event> events) {
+        if((id==1)) {
+            System.out.println("Received rquest from node 1");
+            //list all events
+            int eventsc = 0;
+            for (int i = 0; i < events.size(); i++) {
+                Event event = events.get(i);
+                if(event!=null) {
+                    System.out.println("event mac=" + event.getMacAddress().toLowerCase());
+                    eventsc++;
+                }
+
+            }
+            System.out.println("Received " + eventsc + " from node1");
+        }
+
         if(id == 0) {
             return "Invalid locator attempting to push events.";
 
@@ -52,6 +67,11 @@ public class EventRepository {
         }
 
         ResultSet result = null; //where to store the SQL results
+        //System.out.println("Number of events: " + events.size());
+        if(events.size() < 1) {
+            System.out.println("No events reported, dropping request");
+            return "No events reported, dropping request";
+        }
 
         ArrayList<Integer> beaconIds = new ArrayList<>();
         //GET query the database for beacons in SQL that exist in the current reported list of events.

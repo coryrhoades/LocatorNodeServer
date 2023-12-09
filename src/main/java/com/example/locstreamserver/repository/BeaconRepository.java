@@ -37,13 +37,14 @@ public class BeaconRepository {
         //build sql string
         String queryString = "INSERT INTO " + beaconTable + " (beaconName, macAddress) values ('"+beaconName+"','" + macAddress + "');";
         //System.out.println(queryString);
-
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
         //connect to sql database
         //execute query
         //returns all beacon objects
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
+
+
+
             System.out.println("Connected to Microsoft SQL Server. (addBeacon())");
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(queryString);
@@ -83,11 +84,12 @@ public class BeaconRepository {
         ResultSet result = null;
         String returnString = "";
         ArrayList<Beacon> arr = new ArrayList<>();
-
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
         //returns all beacon objects
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
+
+
+
             //System.out.println("Connected to Microsoft SQL Server. (getBeacons())");
             Statement stmt = connection.createStatement();
             result = stmt.executeQuery(queryString);
@@ -128,11 +130,11 @@ public class BeaconRepository {
         String queryString = "SELECT * FROM " + beaconTable + " WHERE beaconId = '" + id + "'";
         ResultSet result = null;
         ArrayList<Beacon> arr = new ArrayList<>();
-
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
         //returns all beacon objects
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
+
+
             //System.out.println("Connected to Microsoft SQL Server. (getBeaconById())");
             Statement stmt = connection.createStatement();
             result = stmt.executeQuery(queryString);
@@ -170,11 +172,11 @@ public class BeaconRepository {
         String queryString = "SELECT * FROM " + beaconTable + " WHERE macAddress = '" + mac + "'";
         ResultSet result = null;
         ArrayList<Beacon> arr = new ArrayList<>();
-
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
         //returns all beacon objects
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
+
+
             System.out.println("Connected to Microsoft SQL Server. (getBeaconByMac())");
             Statement stmt = connection.createStatement();
             result = stmt.executeQuery(queryString);
@@ -216,11 +218,11 @@ public class BeaconRepository {
     public ArrayList<ownerChange> getOwnershipChanges(String startDate, String endDate){
         ArrayList<ownerChange> arr = new ArrayList<>();
         ResultSet result = null;
-
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
         String queryString = "select top 200 * from ownerChangeLog order by timeStamp desc";
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
+
+
 
             Statement stmt = connection.createStatement();
             result = stmt.executeQuery(queryString);
@@ -256,10 +258,10 @@ public class BeaconRepository {
         int oldOwner = getCurrentOwnerById(beaconId);
         // INSERT INTO ownerChangeLog VALUES (1, 123, 456, '2023-12-03T14:30:00')
         String queryString = "INSERT INTO ownerChangeLog (previousOwnerId, newOwner, timeStamp, beaconId) VALUES (" + oldOwner + ", " + newOwner + ", '" + time + "', " + beaconId + ");";
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
 
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(queryString);
             System.out.println("logOwnershipChange Query String: " + queryString);
@@ -282,10 +284,10 @@ WHERE beaconId = 100;
 
 //        System.out.println("setOwner query string: " + queryString);
 
+    databaseConnectionInfo sqlserver = new databaseConnectionInfo();
+    try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
 
-    try {
-        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-        Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+
         //System.out.println("Connected to Microsoft SQL Server. (addBeacon())");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate(queryString);
@@ -307,10 +309,10 @@ WHERE beaconId = 100;
         ResultSet result = null; //where to store the SQL results
 
         String queryString = "SELECT currentOwner FROM beacons WHERE beaconId = '" + beaconId + "'";
+        databaseConnectionInfo sqlserver = new databaseConnectionInfo();
+        try (Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass())){
 
-        try {
-            databaseConnectionInfo sqlserver = new databaseConnectionInfo();
-            Connection connection = DriverManager.getConnection(sqlserver.getUrl(), sqlserver.getDbuser(), sqlserver.getDbpass());
+
             Statement stmt = connection.createStatement();
             result = stmt.executeQuery(queryString);
 
